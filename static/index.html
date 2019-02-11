@@ -1,0 +1,72 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<link rel="stylesheet" href="./js/jquery.dynatable.css">
+<script src="./js/vendor/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="./js/jquery.dynatable.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://ajaxorg.github.io/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+
+<div class="container-fluid" style="margin-top:20px">
+  <div class="form-group row" style="height:50px;">
+    <div class="col-2">
+      <input class="btn" type="file" id="csvToEsFile" />
+    </div>
+    <div class="col-2">
+      <button id="btn-importCsvToEs" type="button" class="btn btn-primary">↦ Elasticsearch</button>
+    </div>
+    <div class="col-2">
+      <button id="btn-dropindex" type="button" class="btn btn-danger">Drop index</button>
+    </div>
+    <div class="col-2">
+      <div class="spinner-border" role="status" id="spinner-importCsvToEs" style="display:none">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="alert alert-success" role="alert" id="alert-importCsvToEs" style="display:none">
+      </div>
+    </div>
+    <div class="col-2">
+      <button type="button" class="btn btn-primary" id="btn-applytest">Apply</button>
+    </div>
+    <div class="col">
+      <div class="alert alert-danger" role="alert" id="alert-invalidjson-editor2" style="display:none">
+        Invalid JSON
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+<div id="textarea-bodybuilder" style="position: relative; height:400px; width: 100%">.filter('term', 'text.keyword', data.text)
+</div>
+    </div>
+    <div class="col">
+      <div id="textarea-elasticsearch" style="position: relative; height:400px; width: 100%">{}</div>
+      <div class="alert alert-danger" role="alert" id="alert-invalidjson-editor2" style="display:none">
+        Invalid JSON
+      </div>
+    </div>
+  </div>
+  <div class="row" style="margin-top:20px">
+    <div class="col-5">
+      <div id="textarea-testdata" style="position: relative; height:400px; width: 100%">{
+  "text": "blabla",
+}</div>
+      <div class="row" style="margin-top:10px; text-align: center; display: block;">
+        <div class="alert alert-danger" role="alert" id="alert-invalidjson-editor3" style="display:none">
+          Invalid JSON
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div id="textarea-result" style="position: relative; height:400px; width: 100%"></div>
+    </div>
+  </div>
+  <div class="row" style="margin-top:30px">
+  <table class="table table-dark" id="results">
+    <thead>
+      <tr><th></th></tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<script src="./script.js"></script>
