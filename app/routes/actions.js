@@ -76,7 +76,7 @@ const importCsvToEs = async (req,res) => {
           for(let i = 0; i < data.length; i++) {
             const datum = data[i];
             const req = {
-              index: 'stochasticsearch',
+              index: req.query.index || process.env.ES_INDEX,
               type: 'entry',
               id: datum.id,
               body: datum,
@@ -96,7 +96,7 @@ const applyTest = async (req, res) => {
     .root();
   try {
     const result = await ESClient.search({
-      index: 'stochasticsearch',
+      index: req.query.index || process.env.ES_INDEX,
       body: parsed,
       size: 5,
     })
@@ -109,7 +109,7 @@ const applyTest = async (req, res) => {
 const dropIndex = async (req, res) => {
   try {
     const result = await ESClient.indices.delete({
-      index: 'stochasticsearch'
+      index: req.query.index || process.env.ES_INDEX
     })
     res.json({ok: true, result})
   } catch (e) {

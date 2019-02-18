@@ -2,15 +2,20 @@
 <link rel="stylesheet" href="./js/jquery.dynatable.css">
 <script src="./js/vendor/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="./js/jquery.dynatable.js" type="text/javascript" charset="utf-8"></script>
+<script src="./js/flat.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://ajaxorg.github.io/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 
 <div class="container-fluid" style="margin-top:20px">
   <div class="form-group row" style="height:50px;">
+    <label class="col-1 col-form-label" for="input-index">Index : </label>
+    <div class="col-1">
+      <input type="text" class="form-control" id="input-index" placeholder="logstash-*">
+    </div>
     <div class="col-2">
       <input class="btn" type="file" id="csvToEsFile" />
     </div>
     <div class="col-2">
-      <button id="btn-importCsvToEs" type="button" class="btn btn-primary">↦ Elasticsearch</button>
+      <button id="btn-importCsvToEs" type="button" class="btn btn-primary">Import CSV</button>
     </div>
     <div class="col-2">
       <button id="btn-dropindex" type="button" class="btn btn-danger">Drop index</button>
@@ -23,7 +28,7 @@
       </div>
     </div>
     <div class="col-2">
-      <button type="button" class="btn btn-primary" id="btn-applytest">Apply</button>
+      <button type="button" class="btn btn-primary" id="btn-applytest">Query</button>
     </div>
     <div class="col">
       <div class="alert alert-danger" role="alert" id="alert-invalidjson-editor2" style="display:none">
@@ -46,7 +51,7 @@
   <div class="row" style="margin-top:20px">
     <div class="col-5">
       <div id="textarea-testdata" style="position: relative; height:400px; width: 100%">{
-  "text": "blabla",
+  "text": "blabla"
 }</div>
       <div class="row" style="margin-top:10px; text-align: center; display: block;">
         <div class="alert alert-danger" role="alert" id="alert-invalidjson-editor3" style="display:none">

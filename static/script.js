@@ -67,9 +67,19 @@ window.onload = () => {
   }
 
   const savedBodyBuilder = localStorage.getItem('bodybuilder');
+  const savedIndex = localStorage.getItem('index');
+  const inputIndex = document.getElementById('input-index');
+
+  inputIndex.addEventListener('change', (event) => {
+    localStorage.setItem('index', event.target.value);
+  })
 
   if(savedBodyBuilder) {
     textareaBodybuilder.setValue(savedBodyBuilder)
+  }
+
+  if(savedIndex) {
+    inputIndex.value = savedIndex;
   }
 
   convert({}, textareaBodybuilder)
@@ -85,7 +95,7 @@ window.onload = () => {
 
   function dropIndex() {
     if(confirm('Are you sure ?')){
-      fetch('/v0/dropIndex', {
+      fetch(`/v0/dropIndex?index=${inputIndex.value}`, {
         method: 'DELETE'
       })
       .then(res => res.json())
@@ -106,7 +116,7 @@ window.onload = () => {
     const data = new FormData()
     data.append('csv', csvToEsFile.files[0])
 
-    fetch('/v0/importCsvToEs', {
+    fetch(`/v0/importCsvToEs?index=${inputIndex.value}`, {
       method: 'POST',
       body: data
     })
@@ -129,7 +139,7 @@ window.onload = () => {
   function applyTest() {
     const esQuery = JSON.parse(textareaElasticsearch.getValue())
     const testData = JSON.parse(textareaTestdata.getValue())
-    fetch('/v0/applyTest', {
+    fetch(`/v0/applyTest?index=${inputIndex.value}`, {
       method: 'POST',
       body: JSON.stringify({esQuery, testData}),
       headers: {
@@ -143,10 +153,19 @@ window.onload = () => {
         if(res.result.aggregations) {
           results = res.result.aggregations
           textareaResult.setValue(JSON.stringify(results, '', 2))
-          const records = [];
-          const lastColumns = dynatable.records.getFromTable()[0];
-          if(lastColumns){
-            let countColumnts = Object.keys(lastColumns).length-1;
+          const inline = inlineBucket(results)
+          let records;
+
+          if(inline.top_hits.length === 0) {
+            records = inline.agg;
+          } else {
+            records = inline.top_hits;
+          }
+
+
+          const firstColumns = dynatable.records.getFromTable()[0];
+          if(firstColumns){
+            let countColumnts = Object.keys(firstColumns).length-1;
             while(countColumnts > 0){
               dynatable.domColumns.remove(0);
               countColumnts -= 1;
@@ -155,6 +174,9 @@ window.onload = () => {
             dynatable.domColumns.remove(0);
           }
 
+          if(records.length === 0){
+            dynatable.domColumns.add($('<th></th>'), 0);
+          }
           let pos = 0;
           for(let column in records[0]) {
             dynatable.domColumns.add($('<th>'+column+'</th>'), pos += 1);
@@ -175,4 +197,25 @@ window.onload = () => {
 
     })
   }
+
+  function inlineBucket(bucket, agg = [], top_hits = [], aggKeys = {}) {
+    const aggName = Object.keys(bucket).find(key => key.startsWith('agg_'));
+    const newAggKeys = aggKeys;
+    if(typeof(aggName) !== 'undefined') {
+      bucket[aggName].buckets.forEach(inBucket => {
+        newAggKeys[aggName] = inBucket.key;
+        if(typeof(inBucket.top_hits) !== 'undefined') {
+          inBucket.top_hits.hits.hits.forEach(hit => {
+            top_hits.push(flatten(hit._source));
+          })
+        } else {
+          inlineBucket(inBucket, agg, top_hits, newAggKeys);
+        }
+      });
+    } else {
+      agg.push(JSON.parse(JSON.stringify(newAggKeys)))
+    }
+    return {agg, top_hits};
+  }
+
 };
