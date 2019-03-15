@@ -6,7 +6,7 @@ const elasticsearch = require('elasticsearch');
 const {VM, VMScript} = require('vm2');
 
 const ESClient = new elasticsearch.Client({
-  host: 'localhost:9200'
+  host: process.env.ELASTICSEARCH_URL
 });
 
 const convert = async (req, res) => {
@@ -121,8 +121,10 @@ const dropIndex = async (req, res) => {
 module.exports = {
   create: router => {
     router.post('/convert', convert);
-    router.post('/importCsvToEs', importCsvToEs)
-    router.post('/applyTest', applyTest)
-    router.delete('/dropIndex', dropIndex)
+    router.post('/applyTest', applyTest);
+    if(process.env.ALLOW_EDIT === 'true') {
+      router.post('/importCsvToEs', importCsvToEs)
+      router.delete('/dropIndex', dropIndex)
+    }
   },
 };

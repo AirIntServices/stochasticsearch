@@ -37,8 +37,8 @@ window.onload = () => {
 
   const textareaElasticsearch = createEditor('textarea-elasticsearch', 'json');
   textareaElasticsearch.on('change', testJson)
-  const textareaTestdata = createEditor('textarea-testdata', 'json');
-  textareaTestdata.on('change', testJson)
+  // const textareaTestdata = createEditor('textarea-testdata', 'json');
+  // textareaTestdata.on('change', testJson)
 
   const textareaResult = createEditor('textarea-result', 'json');
 
@@ -138,10 +138,10 @@ window.onload = () => {
 
   function applyTest() {
     const esQuery = JSON.parse(textareaElasticsearch.getValue())
-    const testData = JSON.parse(textareaTestdata.getValue())
+    // const testData = JSON.parse(textareaTestdata.getValue())
     fetch(`/v0/applyTest?index=${inputIndex.value}`, {
       method: 'POST',
-      body: JSON.stringify({esQuery, testData}),
+      body: JSON.stringify({esQuery, testData: {}}),
       headers: {
         'Content-Type': 'application/json'
       }
