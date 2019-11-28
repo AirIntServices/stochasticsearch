@@ -4,6 +4,70 @@
 <script src="./js/jquery.dynatable.js" type="text/javascript" charset="utf-8"></script>
 <script src="./js/flat.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://ajaxorg.github.io/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<style>
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+</style>
 
 <div class="container-fluid" style="margin-top:20px">
   <div class="form-group row" style="height:50px;">
@@ -38,8 +102,15 @@
   </div>
   <div class="row">
     <div class="col">
-      <div id="textarea-bodybuilder" style="position: relative; height:400px; width: 100%">.filter('term', 'text.keyword', 'test')</div>
+      <div id="textarea-bodybuilder" style="position: relative; height:400px; width: 100%;margin-bottom:20px">.filter('term', 'text.keyword', 'test')</div>
+      <div>
+      <label class="switch" title="Show in YAML">
+        <input type="checkbox" id="yaml" title="Show in YAML">
+        <span class="slider round" title="Show in YAML"></span>
+      </label>
+      </div>
       <div id="textarea-elasticsearch" style="position: relative; height:400px; width: 100%; margin-top:20px">{}</div>
+      <div id="textarea-elasticsearch-yaml" style="display:none; position: relative; height:400px; width: 100%; margin-top:20px">{}</div>
     </div>
     <div class="col">
         <div id="textarea-result" style="position: relative; height:820px; width: 100%"></div>

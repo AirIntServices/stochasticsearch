@@ -1,3 +1,4 @@
+const YAML = require('yaml');
 const fs = require('fs');
 const ST = require('stjs');
 const bodybuilder = require('bodybuilder');
@@ -28,7 +29,7 @@ ${req.body.data}
 .build()`;
   try {
     const query = vm.run(code);
-    res.json({ok: true, query})
+    res.json({ok: true, query, queryYAML: YAML.stringify(query)})
   } catch (e) {
     try {
       new VMScript(code).compile()

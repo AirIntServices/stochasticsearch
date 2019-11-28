@@ -46,6 +46,7 @@
     "stjs": "^0.0.5",
     "vm2": "^3.6.10",
     "winston": "^3.0.0",
-    "winston-error": "^1.0.1"
+    "winston-error": "^1.0.1",
+    "yaml": "^1.7.2"
   }
 }

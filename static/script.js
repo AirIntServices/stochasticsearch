@@ -39,6 +39,8 @@ window.onload = () => {
   textareaElasticsearch.on('change', testJson)
   // const textareaTestdata = createEditor('textarea-testdata', 'json');
   // textareaTestdata.on('change', testJson)
+  const textareaElasticsearchYAML = createEditor('textarea-elasticsearch-yaml', 'yaml');
+
 
   const textareaResult = createEditor('textarea-result', 'json');
 
@@ -58,6 +60,7 @@ window.onload = () => {
       .then(res => {
         if(res.ok) {
           textareaElasticsearch.setValue(JSON.stringify(res.query, '', 2))
+          textareaElasticsearchYAML.setValue(res.queryYAML);
         } else {
           textareaElasticsearch.setValue(res.error)
         }
@@ -92,6 +95,19 @@ window.onload = () => {
 
   const btnDropindex = document.getElementById('btn-dropindex');
   btnDropindex.addEventListener('click', dropIndex)
+
+  const chkYaml = document.getElementById('yaml');
+  chkYaml.addEventListener('click', toggleYaml);
+
+  function toggleYaml(event) {
+    if(event.target.checked) {
+      document.getElementById('textarea-elasticsearch').style.display='none';
+      document.getElementById('textarea-elasticsearch-yaml').style.display='block';
+    } else {
+      document.getElementById('textarea-elasticsearch').style.display='block';
+      document.getElementById('textarea-elasticsearch-yaml').style.display='none';
+    }
+  }
 
   function dropIndex() {
     if(confirm('Are you sure ?')){
